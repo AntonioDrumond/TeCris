@@ -7,12 +7,14 @@
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
 	#include <windows.h>
 	#define sec 1000
+	#define sleep Sleep
 #elif defined(__linux__)
 	#include <unistd.h>
 	#define sec 1
 #else
 	#error Unknown_OS
 #endif
+
 
 void cls(){
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
