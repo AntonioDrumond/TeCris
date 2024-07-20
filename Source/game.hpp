@@ -6,15 +6,20 @@
 
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
 	#include <windows.h>
-	#define sec 1000
 	#define sleep Sleep
+	#define sec 1000
 #elif defined(__linux__)
 	#include <unistd.h>
-	#define sec 1
+	#define sleep usleep
+	#define sec 1000000
 #else
 	#error Unknown_OS
 #endif
 
+void wait(double x){
+	double time = x * sec;
+	sleep(time);
+}
 
 void cls(){
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
@@ -204,6 +209,14 @@ class stage{
 
 	void checkLines(){
 
+	}
+
+	void left(){
+		RX--;
+	}
+
+	void right(){
+		RX++;
 	}
 
 	void rotLeft(){
