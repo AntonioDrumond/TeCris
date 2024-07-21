@@ -40,20 +40,22 @@ int main(){
 
 		wait(0.5);
 		// Input handling
-		while (SDL_PollEvent(&event)){
-			switch (event.type){
-				case SDL_QUIT:
-					alive = false;
-					std::cout << "SDL_QUIT\n";
-				break;
-				case SDL_KEYDOWN:
-					if (event.key.keysym.sym == SDLK_LEFT){
-						stg->left();
-					}
-					else if (event.key.keysym.sym == SDLK_RIGHT){
-						stg->right();
-					}
-				break;
+		if(!shldPlace){
+			while (SDL_PollEvent(&event)){
+				switch (event.type){
+					case SDL_QUIT:
+						alive = false;
+						std::cout << "SDL_QUIT\n";
+					break;
+					case SDL_KEYDOWN:
+						if (event.key.keysym.sym == SDLK_LEFT){
+							stg->left();
+						}
+						else if (event.key.keysym.sym == SDLK_RIGHT){
+							stg->right();
+						}
+					break;
+				}
 			}
 		}
 

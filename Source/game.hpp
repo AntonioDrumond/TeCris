@@ -35,11 +35,6 @@ void cls(){
 #endif
 }
 
-int rnd(){
-	srand(time(0));
-	return rand();
-}
-
 class blocks{ //Stores the relative positions of all pieces
 	public:
 	int* xs;
@@ -102,6 +97,7 @@ class piece{
 	blocks* blk;
 	
 	piece(){ // start pos is at x=5, y=19
+		srand(time(nullptr));
 		int type = rand() % 7;
 		if(type==0) t = 'i';
 		else if(type==1) t = 'j';
@@ -212,11 +208,13 @@ class stage{
 	}
 
 	void left(){
-		RX--;
+		if(checkMoveLeft())
+			RX--;
 	}
 
 	void right(){
-		RX++;
+		if(checkMoveRight())
+			RX++;
 	}
 
 	void rotLeft(){
@@ -228,6 +226,24 @@ class stage{
 	}
 
 	private:
+	bool checkMoveLeft(){
+		if(RX+falling->blk->xs[1]<1 || RX+falling->blk->xs[2]<1 || RX+falling->blk->xs[3]<1) return false;
+		else if(map[RY+falling->blk->ys[0]][RX+falling->blk->xs[0]-1]) return false;
+		else if(map[RY+falling->blk->ys[1]][RX+falling->blk->xs[1]-1]) return false;
+		else if(map[RY+falling->blk->ys[2]][RX+falling->blk->xs[2]-1]) return false;
+		else if(map[RY+falling->blk->ys[3]][RX+falling->blk->xs[3]-1]) return false;
+		else return true;
+	}
+	
+	bool checkMoveRight(){
+		if(RX+falling->blk->xs[1]>8 || RX+falling->blk->xs[2]>8 || RX+falling->blk->xs[3]>8) return false;
+		else if(map[RY+falling->blk->ys[0]][RX+falling->blk->xs[0]+1]) return false;
+		else if(map[RY+falling->blk->ys[1]][RX+falling->blk->xs[1]+1]) return false;
+		else if(map[RY+falling->blk->ys[2]][RX+falling->blk->xs[2]+1]) return false;
+		else if(map[RY+falling->blk->ys[3]][RX+falling->blk->xs[3]+1]) return false;
+		else return true;
+	}
+	
 	bool checkDraw(int y, int x){
 		if(x==(falling->blk->xs[0]+RX) && y==(falling->blk->ys[0]+RY)) return true;
 		else if(x==(falling->blk->xs[1]+RX) && y==(falling->blk->ys[1]+RY)) return true;
