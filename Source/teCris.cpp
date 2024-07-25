@@ -45,14 +45,21 @@ int main(){
 				switch (event.type){
 					case SDL_QUIT:
 						alive = false;
-						std::cout << "SDL_QUIT\n";
+						std::cout << "Quitting game...\n";
+						wait(0.3);
 					break;
 					case SDL_KEYDOWN:
 						if (event.key.keysym.sym == SDLK_LEFT){
 							stg->left();
 						}
-						else if (event.key.keysym.sym == SDLK_RIGHT){
+						else if(event.key.keysym.sym == SDLK_RIGHT){
 							stg->right();
+						}
+						else if(event.key.keysym.sym== SDLK_UP){
+							stg->rotRight();
+						}
+						else if(event.key.keysym.sym == SDLK_DOWN){
+							stg->rotLeft();
 						}
 					break;
 				}

@@ -204,7 +204,7 @@ class stage{
 	}
 
 	void checkLines(){
-
+		int many = 0;
 	}
 
 	void left(){
@@ -218,14 +218,64 @@ class stage{
 	}
 
 	void rotLeft(){
-
+		int* tempx = new int[4];
+		int* tempy = new int[4];
+		for(int i=0; i<4; i++){
+			tempx[i] = falling->blk->xs[i];
+			tempy[i] = falling->blk->ys[i];
+			rotL(tempy[i], tempx[i]);
+		}
+		if(falling->t!='o' && checkRot(tempy, tempx)){
+			for(int i=0; i<4; i++){
+				falling->blk->xs[i] = tempx[i];
+				falling->blk->ys[i] = tempy[i];
+			}
+		}
+		delete tempx;
+		delete tempy;
 	}
 
 	void rotRight(){
-
+		int* tempx = new int[4];
+		int* tempy = new int[4];
+		for(int i=0; i<4; i++){
+			tempx[i] = falling->blk->xs[i];
+			tempy[i] = falling->blk->ys[i];
+			rotR(tempy[i], tempx[i]);
+		}
+		if(falling->t!='o' && checkRot(tempy, tempx)){
+			for(int i=0; i<4; i++){
+				falling->blk->xs[i] = tempx[i];
+				falling->blk->ys[i] = tempy[i];
+			}
+		}
+		delete tempx;
+		delete tempy;
 	}
 
 	private:
+	void rotL(int& y, int& x){
+		int buffer = x;
+		x = -y;
+		y = buffer;
+	}
+
+	void rotR(int& y, int& x){
+		int buffer = -x;
+		x = y;
+		y = buffer;
+	}
+
+	bool checkRot(int* tempy, int* tempx){
+		for(int i=0; i<4; i++){
+			if(map[tempy[i]+RY][tempx[i]+RX]) return false;
+			else if(tempy[i]+RY < 1) return false;
+			else if(tempx[i]+RX > 9) return false;
+			else if(tempx[i]+RX < 0) return false;
+		}
+		return true;
+	}
+
 	bool checkMoveLeft(){
 		if(RX+falling->blk->xs[1]<1 || RX+falling->blk->xs[2]<1 || RX+falling->blk->xs[3]<1) return false;
 		else if(map[RY+falling->blk->ys[0]][RX+falling->blk->xs[0]-1]) return false;
