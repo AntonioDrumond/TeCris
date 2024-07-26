@@ -204,7 +204,22 @@ class stage{
 	}
 
 	void checkLines(){
-		int many = 0;
+		int many = 0; // amount of lines erased
+		// erasing lines
+		for(int i=1; i<20; i++){
+			bool filled = true;
+			for(int j=0; j<10 && filled; j++){
+				if(!map[i][j]) filled = false;
+			}
+			if(filled){
+				many++;
+				for(int j=0; j<10; j++){
+					map[i][j] = false;
+				}
+			}
+		}
+		// moving remaining lines down
+		std::cout << "erased lines: " << many << "\n";
 	}
 
 	void left(){

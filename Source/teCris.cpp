@@ -36,6 +36,7 @@ int main(){
 		if(shldPlace){
 			delete stg->falling;
 			stg->falling = nullptr;
+			stg->checkLines();
 		}
 
 		wait(0.5);
