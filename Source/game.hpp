@@ -1,6 +1,4 @@
 #include <iostream>
-#include <fstream>
-#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 
@@ -204,22 +202,23 @@ class stage{
 	}
 
 	void checkLines(){
-		int many = 0; // amount of lines erased
-		// erasing lines
 		for(int i=1; i<20; i++){
 			bool filled = true;
-			for(int j=0; j<10 && filled; j++){
+			for(int j=0; j<10 && filled; j++){ // Checks current line
 				if(!map[i][j]) filled = false;
 			}
 			if(filled){
-				many++;
-				for(int j=0; j<10; j++){
+				for(int j=0; j<10; j++){ // Erases current line
 					map[i][j] = false;
 				}
+				for(int x=i+1; x<20; x++){ // Moves lines down
+					for(int j=0; j<10; j++){
+						map[x-1][j] = map[x][j];
+					}
+				}
+				i--;
 			}
 		}
-		// moving remaining lines down
-		std::cout << "erased lines: " << many << "\n";
 	}
 
 	void left(){
