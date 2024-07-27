@@ -1,12 +1,13 @@
 #include "game.hpp"
 #include <SDL2/SDL.h>
 
-bool alive = true;
-
 int main(){
 	if(SDL_Init(SDL_INIT_VIDEO) != 0) return 1;
 	SDL_Event event;
 	
+	std::cout << "Focus the \"controller\" window and press LEFT and RIGHT to move, UP and DOWN to rotate and C to swap the piece\nPress ENTER to play\n";
+	getchar();
+
 	// Creating "controller" window
 	SDL_Window* window = SDL_CreateWindow("Controller", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 200, 200, SDL_WINDOW_SHOWN);
 	if(window == nullptr){
@@ -21,17 +22,20 @@ int main(){
 		return 1;
 	}
 
-	std::cout << "Focus the \"controller\" window and press LEFT and RIGHT to move, UP and DOWN to rotate and C to swap the piece\nPress ENTER to play\n";
-	getchar();
 	cls();
-
-	int i=0;
 	stage* stg = new stage();
-	while(i<100 && alive){
+	int alive = 0;
+	bool canSwap = true;
+
+	while(alive == 0){
 		// Game updates
-		if(stg->falling==nullptr) stg->newPiece();
+		if(stg->falling==nullptr){
+			stg->newPiece();
+			canSwap = true;
+		}
 		bool shldPlace = !stg->fall();
-		if(shldPlace) stg->place();
+		if(shldPlace && stg->RY> 18) alive = 1;
+		if(shldPlace && stg->RY<=18) stg->place();
 		stg->drawBoard();
 		if(shldPlace){
 			delete stg->falling;
@@ -45,7 +49,7 @@ int main(){
 			while (SDL_PollEvent(&event)){
 				switch (event.type){
 					case SDL_QUIT:
-						alive = false;
+						alive = 2;
 						std::cout << "Quitting game...\n";
 						wait(0.3);
 					break;
@@ -62,11 +66,21 @@ int main(){
 						else if(event.key.keysym.sym == SDLK_DOWN){
 							stg->rotLeft();
 						}
+						else if(event.key.keysym.sym == SDLK_c){
+							if(canSwap){
+								canSwap = false;
+								stg->swap();
+							}
+						}
 					break;
 				}
 			}
 		}
+	}
 
+	if(alive == 1){
+		std::cout << "YOU LOST!\n";
+		wait(1);
 	}
 
 	SDL_DestroyRenderer(renderer);

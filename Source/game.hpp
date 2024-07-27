@@ -4,11 +4,11 @@
 
 #if defined(_WIN32) || defined(_WIN64) || defined(__WINDOWS__)
 	#include <windows.h>
-	#define sleep Sleep
+	#define slep Sleep
 	#define sec 1000
 #elif defined(__linux__)
 	#include <unistd.h>
-	#define sleep usleep
+	#define slep usleep
 	#define sec 1000000
 #else
 	#error Unknown_OS
@@ -16,7 +16,7 @@
 
 void wait(double x){
 	double time = x * sec;
-	sleep(time);
+	slep(time);
 }
 
 void cls(){
@@ -181,6 +181,15 @@ class stage{
 	void newPiece(char t){ // Spawns a piece of type t
 		if(falling!=nullptr) delete falling;
 		falling = new piece(t);
+		RX = 5;
+		RY = 19;
+	}
+
+	void swap(){
+		if(hold==nullptr) hold = new piece();
+		piece* buffer = hold;
+		hold = falling;
+		falling = buffer;
 		RX = 5;
 		RY = 19;
 	}
